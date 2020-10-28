@@ -1,0 +1,59 @@
+
+<h2><a href="<?=$url?>" class="a1">Экслибрисы Аполлона Степановича Чернова</a></h2>
+
+<? if (is_in_group ($ENGRAVE['admins'])) : ?> <!-- администрирование -->
+<div class="admin mt20">
+[<a href='<?=$url?>.form&edit=<?=$view_id?>'>Редактировать</a>]
+[<a href="#" onclick="_.confirm('Галерея #<?=$row['id']?> `<?=$row['title']?>` будет удалена вместе с изображениями. Продолжить?', '<?="{$url}&dlt={$view_id}"?>')">Удалить</a>]
+</div>
+<? endif; ?> <!-- администрирование конец -->
+
+<div class="mt20">
+<strong><?=$row['title']?></strong>
+<? if (is_in_group($ENGRAVE['admins'])) : ?> (№ <?=$row['sort']?> в списке)<? endif; ?>
+<br /><br /><?=$row['desc']?>
+<br /><br /><br /><br />
+</div>
+
+<div class="mt20 mb20">
+<?
+if ($error) print_error ($error);
+if ($warning) print_error ($warning);
+if ($ENGRAVE['error']) print_error ($ENGRAVE['error']);
+if ($ENGRAVE['warning']) print_error ($ENGRAVE['warning']);
+?>
+</div>
+
+<? if (is_in_group($ENGRAVE['admins'])) : ?>
+<form method='POST' enctype="multipart/form-data" action='<?=$url?>.view.<?=$view_id?>'>
+<input type="hidden" name="MAX_FILE_SIZE" value="<?=$ENGRAVE['img']['maxsize']?>" />
+<input name="imgfile" type="file" />
+<textarea maxlength="1024" rows="3" cols="60" name="for_i_desc" placeholder="Краткое описание изображения"></textarea>
+<br /><input type="submit" value="Загрузить" /><br /><br />
+</form>
+<br /><br />
+<? endif; ?>
+
+<? /* *** Вывод изображений */ ?>
+<? foreach ($array1 as $item=>$val) : ?>
+<a href="/?enimg=<?=$val['id']?>" target="_blank"><img class="img_view" src="/?enimg=<?=$val['id']?>&size=250"/></a><br />
+<p><?=$val['desc']?></p>
+<? if (is_in_group ($ENGRAVE['admins'])) : ?>
+<div class="admin">
+<?if ($val['img_sort'] <> $max_img_sort):?>
+[<a href="<?=$url_page?>&direction=up&img_id=<?=$val['id']?>">Вверх &#8593;</a>]
+<?endif;
+if ($val['img_sort'] <> 1):?>
+[<a href="<?=$url_page?>&direction=down&img_id=<?=$val['id']?>">Вниз &#8595;</a>]
+<?endif;?>
+<?if ($val['id']<>$cov_is_here): //если это обложка, то не удалять и не делать обложкой )) ?>
+[<a href="#" onclick="_.confirm('Изображение #<?=$val['id']?> будет удалено. Продолжить?', '<?="{$url_page}&im_dlt={$val['id']}"?>')">Удалить</a>]
+[<a href="<?=$url_page?>&cover=<?=$val['id']?>">На обложку</a>]
+<?else: print "[Это обложка]";
+endif;?>
+[<?=$val['img_sort']?>]
+</div>
+<? endif;?>
+<br /><br />
+<? endforeach; ?>
+
