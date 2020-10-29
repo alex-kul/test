@@ -1,4 +1,9 @@
-
+<form method='POST' enctype="multipart/form-data" action='<?=$url?>.view.<?=$view_id?>'>
+<input type="hidden" name="MAX_FILE_SIZE" value="<?=$ENGRAVE['img']['maxsize']?>" />
+<input name="imgfile" type="file" />
+<textarea maxlength="1024" rows="3" cols="60" name="for_i_desc" placeholder="Краткое описание изображения"></textarea>
+<br /><input type="submit" value="Загрузить" /><br /><br />
+</form>
 <h2><a href="<?=$url?>" class="a1">Экслибрисы Аполлона Степановича Чернова</a></h2>
 
 <? if (is_in_group ($ENGRAVE['admins'])) : ?> <!-- администрирование -->
